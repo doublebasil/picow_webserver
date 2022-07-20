@@ -1,0 +1,23 @@
+--- Arduino Nano 33 IoT
+Has Wifi for time syncing. Is unfortunately a 3.3V board
+Pinout diagram:
+https://content.arduino.cc/assets/Pinout-NANOble_latest.pdf
+
+--- GikiFun peristaltic pump
+Probably a bit slow, and the tubing will wear out eventually
+Amazon link:
+https://amzn.to/3chuTia
+Rated for 12V at 80mA
+
+--- Adafruit L9110H H-Bridge
+Manufacturer Link:
+https://cdn-shop.adafruit.com/product-files/4489/4489_datasheet-l9110.pdf
+Rated for 2.5-12.0V at a max of 800mA, we should only be using 10% of max current
+
+--- 12V 2A Power Supply with 2.1mm Barrel Jack (RS PRO)
+A diagram to show which part is positive and which is negative
+  ____
+ |    ---- =Wire=
+ |____----
+
+  +  -
