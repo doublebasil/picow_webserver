@@ -10,9 +10,9 @@ Can't afford to put images here so this text-art diagram will have to suffice.
   GND   [03] <|@ GP25           |> [38]  GND  --------------- GND <| 5V Buck Converter |> GND ---|-- 0V
   GP2   [04] <|                 |> [37]  3V3_EN               EN  <|___________________|       | |
   GP3   [05] <|                 |> [36]  3V3(OUT)                                              | |
-  GP4   [06] <|                 |> [35]          ADC_VREF                IRF520NPbF            | |
-  GP5   [07] <|                 |> [34]  GP28    ADC2              _____     MOSFET            | |
-  GND   [08] <|                 |> [33]  GND     AGND             |  O  |                      | |
+  GP4   [06] <|                 |> [35]          ADC_VREF                                      | |
+  GP5   [07] <|                 |> [34]  GP28    ADC2              _____ IRF520NPbF            | |
+  GND   [08] <|                 |> [33]  GND     AGND             |  O  |  MOSFET              | |
   GP6   [09] <|                 |> [32]  GP27    ADC1             |_____|                      | |
   GP7   [10] <|                 |> [31]  GP26    ADC0              | | |                       | |
   GP8   [11] <|                 |> [30]  RUN                       | | |--DRAIN----------------| |
