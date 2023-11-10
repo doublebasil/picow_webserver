@@ -1,6 +1,8 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 
+#include "wifi.hpp"
+
 int main( void )
 {
     stdio_init_all();
@@ -11,11 +13,5 @@ int main( void )
         return -1;
     }
 
-    while( 1 )
-    {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-        sleep_ms(500);
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
-        sleep_ms(500);
-    }
+    wifi_init();
 }

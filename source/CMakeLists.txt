@@ -1,5 +1,6 @@
 add_executable(plant_watering 
     main.cpp
+    wifi.cpp
     )
 
 target_link_libraries(plant_watering
