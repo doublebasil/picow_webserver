@@ -1,17 +1,21 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 
+#include "sysdata.hpp"
 #include "wifi.hpp"
 
 int main( void )
 {
-    stdio_init_all();
-    
-    if( cyw43_arch_init() )
-    {
-        printf( "WiFi module could not be initialised\n" );
-        return -1;
-    }
+    // Create the global data struct
+    tSysData sysData;
 
-    wifi_init();
+    // Initialise the debug output
+    stdio_init_all();
+
+    // Init wifi chip, this is also needed for the built-in led
+    wifi_init( &sysData );
+
+    wifi_runServer( &sysData );
+
+    while( 1 );
 }
