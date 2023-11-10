@@ -10,5 +10,14 @@
 # This is much faster, but will use more cpu
 # -C build tells make what folder to build from/in
 
+
+# If submodules not found, git submodule update to download sdk
+if [ ! -d "submodules" ]; then
+    git submodule update --init --recursive
+    # Must be recursive as the sdk has wifi submodules
+fi
+
+# Build files
 cmake -DPICO_BOARD=pico_w -B build && \
 make -j $(getconf _NPROCESSORS_ONLN) -C build
+
