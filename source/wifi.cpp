@@ -1,4 +1,5 @@
 #include "wifi.hpp"
+#include "config.h"
 
 int wifi_init( tSysData* sysDataPtr )
 {
