@@ -28,3 +28,7 @@ Can't afford to put images here so this text-art diagram will have to suffice.
                      | | |                                             \\====================//
 
 ```
+
+Most of the code is adapted from https://github.com/krzmaz/pico-w-webserver-example
+lwipopts.h is copied from the above repo, but there are similar files in the 
+pico-examples repository.

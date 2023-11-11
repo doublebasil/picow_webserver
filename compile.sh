@@ -18,6 +18,6 @@ if [ ! -d "submodules" ]; then
 fi
 
 # Build files
-cmake -DPICO_BOARD=pico_w -B build && \
+cmake -B build && \
 make -j $(getconf _NPROCESSORS_ONLN) -C build
 

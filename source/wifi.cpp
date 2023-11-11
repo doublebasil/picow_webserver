@@ -16,5 +16,18 @@ int wifi_init( tSysData* sysDataPtr )
 
 int wifi_runServer( tSysData* sysDataPtr )
 {
+    printf( "Attempting to connect to WiFi\n" );
+    
+    int result = 0;
+    result = cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASSWORD, CYW43_AUTH_WPA2_AES_PSK, 30000);
+    
+    if( result != 0 )
+    {
+        printf( "Could not connect\n" );
+        return 1;
+    }
+    else
+        printf( "Connection successful" );
+
     return 0;
 }
