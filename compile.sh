@@ -21,3 +21,7 @@ fi
 cmake -B build && \
 make -j $(getconf _NPROCESSORS_ONLN) -C build
 
+# If user runs ./compile u then follow up by running the upload script
+if test "$1" = "u"; then
+    bash upload.sh
+fi
