@@ -1,4 +1,3 @@
-# I'll mess with this when everything is working
 cmake_minimum_required(VERSION 3.18)
 
 # I think Perl is needed for generating CGI stuff

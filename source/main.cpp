@@ -1,3 +1,6 @@
+#include <string.h>
+#include <stdlib.h>
+
 #include "lwip/apps/httpd.h"
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
@@ -15,10 +18,14 @@ int main( void )
     // Initialise the debug output
     stdio_init_all();
 
-    // Init wifi chip, this is also needed for the built-in led
+    // cyw43 related setup
     wifi_init( &sysData );
 
     wifi_runServer( &sysData );
 
-    while( 1 );
+    while( 1 )
+    {
+        sleep_ms( 1000U );
+        printf("test\n");
+    }
 }

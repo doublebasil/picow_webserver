@@ -4,8 +4,13 @@
 int wifi_init( tSysData* sysDataPtr )
 {
     // From this webpage: https://arduino-pico.readthedocs.io/en/latest/wifi.html
-    // It seems that the wifi chip can be in station (STA) mode or access point (AP) mode
+    // WiFi can be in station (STA) mode or access point (AP) mode
     // I'm using STA mode because that's what other people have done
+
+    cyw43_arch_init();
+
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+
     cyw43_arch_enable_sta_mode();
 
     // Set the power management mode

@@ -11,17 +11,20 @@ add_executable(${PROJECT_NAME}
     wifi.cpp
     )
 
+# pico-sdk (a submodule) needs to use see lwipopts.h and fs_data.c, which is in our source folder
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+    )
+
 target_link_libraries(${PROJECT_NAME}
-    # pico_cyw43_arch_none # Wifi stuff
     pico_cyw43_arch_lwip_threadsafe_background
     pico_lwip_http
     pico_stdlib
     )
 
-# I think the next line is so that pico-sdk can see lwipopts.h and fs_data.c, which is in our source folder
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}
-    )
+# Enable USB and UART for serial output
+pico_enable_stdio_usb(${PROJECT_NAME} TRUE)
+pico_enable_stdio_uart(${PROJECT_NAME} FALSE)
 
 # By default make only produces a .elf, this function allows uf2 and others to be generated
 pico_add_extra_outputs(${PROJECT_NAME})

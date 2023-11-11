@@ -1,7 +1,7 @@
 #!/bin/bash
 # Uploads the .uf2 to the pico
 
-UF2_PATH="./build/source/plant_watering.uf2"
+UF2_PATH="./build/source/pico_w_project.uf2"
 
 # Check the .uf2 is there
 if ! [ -f $UF2_PATH ]; then
