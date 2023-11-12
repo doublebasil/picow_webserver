@@ -17,11 +17,15 @@ if [ ! -d "submodules" ]; then
     # Must be recursive as the sdk has wifi submodules
 fi
 
+compile_successful=false
 # Build files
 cmake -B build && \
-make -j $(getconf _NPROCESSORS_ONLN) -C build
+make -j $(getconf _NPROCESSORS_ONLN) -C build && \
+compile_successful=true
+
+echo compile_successful=$compile_successful
 
 # If user runs ./compile u then follow up by running the upload script
-if test "$1" = "u"; then
-    bash upload.sh
+if [ "$compile_successful" = true ] && [ "$1" = "u" ]; then
+    bash upload.sh $2
 fi
