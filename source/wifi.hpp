@@ -1,3 +1,6 @@
+#ifndef WIFI_HPP
+#define WIFI_HPP
+
 #include <stdint.h>
 
 #include "lwip/apps/httpd.h"
@@ -11,3 +14,5 @@
 int wifi_init( tSysData* sysDataPtr );
 
 int wifi_runServer( tSysData* sysDataPtr );
+
+#endif /* WIFI_HPP */
