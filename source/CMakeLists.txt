@@ -24,7 +24,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # Enable USB and UART for serial output
 pico_enable_stdio_usb(${PROJECT_NAME} TRUE)
-pico_enable_stdio_uart(${PROJECT_NAME} FALSE)
+pico_enable_stdio_uart(${PROJECT_NAME} TRUE)
 
 # By default make only produces a .elf, this function allows uf2 and others to be generated
 pico_add_extra_outputs(${PROJECT_NAME})

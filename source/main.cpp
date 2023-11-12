@@ -21,7 +21,7 @@ int main( void )
     // cyw43 related setup
     wifi_init( &sysData );
 
-    wifi_runServer( &sysData );
+    wifi_runServer();
 
     // while( 1 )
     // {
@@ -31,6 +31,8 @@ int main( void )
     //     sleep_ms( 1000U );
     //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
     // }
+
+    cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
 
     for( ;; ) {}
 }

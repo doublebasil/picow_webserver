@@ -9,7 +9,7 @@
                 On-board LED
             </h1>
             <br>
-            <form method="get" action="spud.cgi">
+            <form method="get" action="led.cgi">
                 <input value="1" name="led" type="checkbox" <!--#btnState-->>
 			    <span style=<!--#btnBg-->>LED1</span><br>
 

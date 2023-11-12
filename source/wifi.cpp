@@ -48,7 +48,7 @@ static uint16_t __time_critical_func( ssiHandler )(int tagIndex, char *pcInsert,
             if( ledState == true )
                 printed = snprintf( pcInsert, iInsertLen, "\"background-color:green;\"" );
             else
-                printed = snprintf( pcInsert, iInsertLen, "\"background-color:magenta;\"" );
+                printed = snprintf( pcInsert, iInsertLen, "\"background-color:red;\"" );
 
             break;
         }
@@ -67,14 +67,12 @@ static uint16_t __time_critical_func( ssiHandler )(int tagIndex, char *pcInsert,
 
 // COMMON GATEWAY INTERFACE MODULE FUNCTIONS
 static void cgi_init( void );
-// Define a cgiHandler
-const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] );
 
 // COMMON GATEWAY INTERFACE MODULE DATA
 static const tCGI cgiHandlers[NUM_OF_CGI_HANDLERS] =
 {
     {
-        "/leds.cgi", cgiHandler1
+        "/led.cgi", cgiHandler1
     },
 };
 
@@ -82,7 +80,6 @@ static const tCGI cgiHandlers[NUM_OF_CGI_HANDLERS] =
 int wifi_init( tSysData* sysDataPtr )
 {
     m_sysDataPtr = sysDataPtr;
-
 
     // Init cyw43 architecture, this is for the pico's wifi chip
     if( cyw43_arch_init() != 0 )
@@ -104,10 +101,10 @@ int wifi_init( tSysData* sysDataPtr )
     return 0; // Success!
 }
 
-int wifi_runServer( tSysData* sysDataPtr )
+int wifi_runServer()
 {
     printf( "Attempting to connect to WiFi\n" );
-    sysDataPtr->wifiStatus = wifi_connecting_e;
+    m_sysDataPtr->wifiStatus = wifi_connecting_e;
     
     int result = cyw43_arch_wifi_connect_timeout_ms( WIFI_SSID, 
         WIFI_PASSWORD, 
@@ -117,12 +114,12 @@ int wifi_runServer( tSysData* sysDataPtr )
     if( result != 0 )
     {
         printf( "Could not connect\n" );
-        sysDataPtr->wifiStatus = wifi_connectionFailed_e;
+        m_sysDataPtr->wifiStatus = wifi_connectionFailed_e;
         return 1;
     }
 
     printf( "Connection successful\n" );
-    sysDataPtr->wifiStatus = wifi_connected_e;
+    m_sysDataPtr->wifiStatus = wifi_connected_e;
 
     // Find what IP has been assigned to the pico
     extern cyw43_t cyw43_state;
@@ -165,5 +162,17 @@ static void cgi_init( void )
 
 const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] )
 {
-    return "/ssi_cgi";
+    int i;
+
+    printf( "cgiHandler1 called with index %d\n", iIndex );
+
+    /* Check the query string
+     * Allgedly, a request to turn on LED2 and LED4 would be "/something.cgi?led=2&led=4"
+     */
+    for( i = 0; i < iNumParams; ++i )
+    {
+        printf( pcParam[i] );
+    }
+
+    return "/index.shtml";
 }
