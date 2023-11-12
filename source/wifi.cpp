@@ -169,10 +169,21 @@ const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcVa
     /* Check the query string
      * Allgedly, a request to turn on LED2 and LED4 would be "/something.cgi?led=2&led=4"
      */
+
+    // If no response is given, turn led off
+    bool newState = false;
+
     for( i = 0; i < iNumParams; ++i )
     {
-        printf( pcParam[i] );
+        if( strcmp( pcParam[i], "led" ) == 0 )
+        {
+            // Strings are equal
+            newState = true;
+        }
     }
+
+    cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, newState );
+    m_sysDataPtr->builtInLedState = newState;
 
     return "/index.shtml";
 }

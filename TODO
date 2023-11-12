@@ -1,0 +1,8 @@
+Put the wifi stuff in a folder, and then split the cgi and ssi stuff out
+into more folder
+
+Add a second checkbox, maybe choose between on, off or blinking
+Use the RP2040s second core to process the blinking, I assume the web server 
+is running on the main core, so you could do other stuff on the second core
+
+Rename the repo

@@ -32,7 +32,7 @@ int main( void )
     //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
     // }
 
-    cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
+    // cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
 
     for( ;; ) {}
 }
