@@ -23,12 +23,14 @@ int main( void )
 
     wifi_runServer( &sysData );
 
-    while( 1 )
-    {
-        sleep_ms( 1000U );
-        printf("End of main\n");
-        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
-        sleep_ms( 1000U );
-        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
-    }
+    // while( 1 )
+    // {
+    //     sleep_ms( 1000U );
+    //     printf("End of main\n");
+    //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
+    //     sleep_ms( 1000U );
+    //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
+    // }
+
+    for( ;; ) {}
 }

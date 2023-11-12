@@ -1,46 +1,60 @@
 #include "wifi.hpp"
 #include "config.h"
 
-// Note LWIP is Light-weight IP
+#define NUM_OF_CGI_HANDLERS ( 1 )
+
+// SSI is for updating the HTML, and is controlled by the pico
+// CGI is for changing the data on the pico, based on user interaction on the web
+
+// Note LWIP is Light-weight IP, it's a TCP IP stack and it's basically magic
+
+tSysData* m_sysDataPtr;
 
 // SERVER SIDE INCLUDES MODULE DATA
 /* __not_in_flash is a pico-sdk macro which ensures this array will be placed in RAM
-I presume this is for speed
+This is a "premature optimisation" which prevents flash latency
 When declared as __not_in_flash, the array needs a group name, which is "httpd"
 By default, the tags have a maximum length of 8. See ssi_init where this is checked
 */
 static const char* __not_in_flash("httpd") ssiTags[] = {
-    "Tom",
-    "Snowy",
-    "Jerry", // I don't know what these tags are for yet, so I'll change them later
-    "Boo",
-    "Rud",
+    "btnState",
+    "btnBg",
 };
 
 // SERVER SIDE INCLUDES MODULE FUNCTIONS
 static void ssi_init( void );
-// Define an ssi_handler function as time-critical
+// Define an ssiHandler function as time-critical (reduces flash latency)
 static uint16_t __time_critical_func( ssiHandler )(int tagIndex, char *pcInsert, int iInsertLen)
 {
     size_t printed;
+    bool ledState;
     switch( tagIndex )
     {
-        case 0: // "Tom"
+        case 0: // "btnState"
         {
-            printed = snprintf( pcInsert, iInsertLen, "Tom, here is a random number :) %d", rand() );
+            // This is for changing the html checkbox to checked or not
+            ledState = m_sysDataPtr->builtInLedState;
+            if( ledState == true )
+                printed = snprintf( pcInsert, iInsertLen, "checked" );
+            else
+                printed = snprintf( pcInsert, iInsertLen, " " );
+            
             break;
         }
-        case 1: // "Snowy"
+        case 1: // "btnBg"
         {
-            printed = snprintf( pcInsert, iInsertLen, "Snowy, here is a random number :) %d", rand() );
+            // Update the text background based on the LED state
+            ledState = m_sysDataPtr->builtInLedState;
+            if( ledState == true )
+                printed = snprintf( pcInsert, iInsertLen, "\"background-color:green;\"" );
+            else
+                printed = snprintf( pcInsert, iInsertLen, "\"background-color:magenta;\"" );
+
             break;
         }
-        case 2:
-        case 3:
-        case 4:
         default:
         {
-            printed = snprintf( pcInsert, iInsertLen, "cba to add these" );
+            printed = 0;
             break;
         }
     }
@@ -52,11 +66,24 @@ static uint16_t __time_critical_func( ssiHandler )(int tagIndex, char *pcInsert,
 }
 
 // COMMON GATEWAY INTERFACE MODULE FUNCTIONS
-static int cgi_init( void );
+static void cgi_init( void );
+// Define a cgiHandler
+const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] );
+
+// COMMON GATEWAY INTERFACE MODULE DATA
+static const tCGI cgiHandlers[NUM_OF_CGI_HANDLERS] =
+{
+    {
+        "/leds.cgi", cgiHandler1
+    },
+};
 
 // PUBLIC MODULE FUNCTIONS
 int wifi_init( tSysData* sysDataPtr )
 {
+    m_sysDataPtr = sysDataPtr;
+
+
     // Init cyw43 architecture, this is for the pico's wifi chip
     if( cyw43_arch_init() != 0 )
     {
@@ -113,7 +140,7 @@ int wifi_runServer( tSysData* sysDataPtr )
     return 0;
 }
 
-// Server Side Includes functions
+// SERVER SIDE INCLUDES MODULE FUNCTIONS
 static void ssi_init( void )
 {
     // Ensure that the ssiTags don't exceed the maximum length
@@ -130,8 +157,13 @@ static void ssi_init( void )
                           LWIP_ARRAYSIZE( ssiTags ) );
 }
 
-// Common Gateway Interface functions
-static int cgi_init( void )
+// COMMON GATEWAY INTERFACE MODULE FUNCTIONS
+static void cgi_init( void )
 {
-    return 0;
+    http_set_cgi_handlers( cgiHandlers, NUM_OF_CGI_HANDLERS );
+}
+
+const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] )
+{
+    return "/ssi_cgi";
 }

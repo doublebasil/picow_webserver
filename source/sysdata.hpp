@@ -19,6 +19,7 @@ typedef struct
 {
     eWifiStatus wifiStatus = wifi_uninitialised_e;
     uint32_t ipAddress = 0x0;
+    bool builtInLedState = false;
 } tSysData;
 
 #endif /* SYSDATA_HPP */

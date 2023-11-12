@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            This is test.shtml
+        </title>
+        <body>
+            <h1>
+                On-board LED
+            </h1>
+            <br>
+            <form method="get" action="spud.cgi">
+                <input value="1" name="led" type="checkbox" <!--#btnState-->>
+			    <span style=<!--#btnBg-->>LED1</span><br>
+
+                <input value="Send" type="submit">
+            </form>
+        </body>
+    </head>
+</html>
