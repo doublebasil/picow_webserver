@@ -6,13 +6,18 @@
 
 typedef enum
 {
-    wifiUninitialised_e,
-    wifiMax_e,
+    wifi_uninitialised_e,
+    wifi_initFailed_e,
+    wifi_notConnected_e,
+    wifi_connecting_e,
+    wifi_connectionFailed_e,
+    wifi_connected_e,
+    wifi_max_e,
 } eWifiStatus;
 
 typedef struct
 {
-    eWifiStatus wifiStatus = wifiUninitialised_e;
+    eWifiStatus wifiStatus = wifi_uninitialised_e;
 } tSysData;
 
 #endif /* SYSDATA_HPP */

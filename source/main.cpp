@@ -5,7 +5,7 @@
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 
-#include "lwipopts.h" // Required for compile, copied from https://github.com/krzmaz/pico-w-webserver-example, you can also find simlar files in pico-examples
+#include "lwipopts.h" // Required for compile, copied from https://github.com/krzmaz/pico-w-webserver-example, you can find similar files in pico-examples
 
 #include "sysdata.hpp"
 #include "wifi.hpp"
@@ -26,6 +26,9 @@ int main( void )
     while( 1 )
     {
         sleep_ms( 1000U );
-        printf("test\n");
+        printf("End of main\n");
+        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
+        sleep_ms( 1000U );
+        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
     }
 }
