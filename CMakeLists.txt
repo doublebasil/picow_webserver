@@ -6,14 +6,13 @@ if(NOT PERL_FOUND)
     message(FATAL_ERROR "Perl is needed for generating the fsdata.c file")
 endif()
 
-# Run the makefsdata script to generate the autogen_fsdata.c file
+# Run the makefsdata script to generate the autogen_fsdata.c file from html files
 execute_process(COMMAND
-    perl ${CMAKE_CURRENT_LIST_DIR}/utils/makefsdata
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/html
+    perl ${CMAKE_CURRENT_LIST_DIR}/utils/makefsdata  # Location of the makefsdata script
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/html # Folder that contains all the html files
     ECHO_OUTPUT_VARIABLE
     ECHO_ERROR_VARIABLE
     )
-file(RENAME ./html/autogen_fsdata.c ./source/autogen_fsdata.c)
 
 set(PROJECT_NAME pico_w_project)
 set(PICO_BOARD pico_w)

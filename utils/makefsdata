@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Credit to https://github.com/krzmaz/pico-w-webserver-example
-# I don't know how to use perl, this is slightly modified
+# Copied from https://github.com/krzmaz/pico-w-webserver-example
+# This file converts html files into c arrays, which are then
+# used by one of the magical web libraries. You don't need to
+# understand this file
 
-open(OUTPUT, "> autogen_fsdata.c");
+open(OUTPUT, "> ../source/autogen_fsdata.c"); # This is the only modified line
 
-chdir("web");
-chdir("html");
 open(FILES, "find . -type f |");
 
 while($file = <FILES>) {
