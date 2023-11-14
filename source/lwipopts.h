@@ -1,7 +1,8 @@
+// From https://github.com/raspberrypi/pico-examples/blob/01e8128953a9766608be0a9254afb7900107e222/pico_w/lwipopts_examples_common.h
+// These are the options for lwip
+
 #pragma once
 
-// apparently needed...
-// from: https://github.com/raspberrypi/pico-examples/blob/01e8128953a9766608be0a9254afb7900107e222/pico_w/lwipopts_examples_common.h
 // allow override in some examples
 #ifndef NO_SYS
 #define NO_SYS                      1
