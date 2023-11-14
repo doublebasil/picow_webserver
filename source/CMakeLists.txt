@@ -1,10 +1,12 @@
 # Run the makefsdata script to generate the autogen_fsdata.c file
 execute_process(COMMAND
-    perl ${CMAKE_CURRENT_LIST_DIR}/web/makefsdata
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    perl ${CMAKE_CURRENT_LIST_DIR}/../utils/makefsdata
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/../html
     ECHO_OUTPUT_VARIABLE
     ECHO_ERROR_VARIABLE
     )
+
+file(RENAME ../html/autogen_fsdata.c ./autogen_fsdata.c)
 
 add_executable(${PROJECT_NAME} 
     main.cpp
