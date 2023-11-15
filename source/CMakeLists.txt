@@ -1,6 +1,6 @@
-add_executable(${PROJECT_NAME} 
+add_executable(${PROJECT_NAME}
     main.cpp
-    wifi.cpp
+    webserver/webserver.cpp
     )
 
 # pico-sdk (a submodule) needs to use see lwipopts.h and fs_data.c, which is in our source folder

@@ -8,7 +8,7 @@
 #include "lwipopts.h" // Required for compile, copied from https://github.com/krzmaz/pico-w-webserver-example, you can find similar files in pico-examples
 
 #include "sysdata.hpp"
-#include "wifi.hpp"
+#include "webserver/webserver.hpp"
 
 int main( void )
 {
@@ -22,17 +22,6 @@ int main( void )
     wifi_init( &sysData );
 
     wifi_runServer();
-
-    // while( 1 )
-    // {
-    //     sleep_ms( 1000U );
-    //     printf("End of main\n");
-    //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
-    //     sleep_ms( 1000U );
-    //     cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
-    // }
-
-    // cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
 
     for( ;; ) {}
 }

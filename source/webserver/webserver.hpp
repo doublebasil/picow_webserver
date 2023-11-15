@@ -1,5 +1,5 @@
-#ifndef WIFI_HPP
-#define WIFI_HPP
+#ifndef WEBSERVER_HPP
+#define WEBSERVER_HPP
 
 #include <stdint.h>
 
@@ -18,4 +18,4 @@ int wifi_runServer();
 // Define a cgiHandler
 const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] );
 
-#endif /* WIFI_HPP */
+#endif /* WEBSERVER_HPP */
