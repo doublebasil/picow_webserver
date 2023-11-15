@@ -3,9 +3,11 @@ add_executable(${PROJECT_NAME}
     webserver/webserver.cpp
     )
 
-# pico-sdk (a submodule) needs to use see lwipopts.h and fs_data.c, which is in our source folder
+# Adding a directory here means anything within this project can include it
+# Might be the wrong way to do it but I couldn't figure out the right way
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}           # Contains config.h and sysdata.h which may be used anywhere
+    ${CMAKE_CURRENT_LIST_DIR}/webserver # pico-sdk (a submodule) needs to use see lwipopts.h and fs_data.c, which is in our source folder
     )
 
 target_link_libraries(${PROJECT_NAME}

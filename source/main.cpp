@@ -1,7 +1,7 @@
 #include "pico/stdlib.h"
 
-#include "sysdata.hpp"
-#include "webserver/webserver.hpp"
+#include "sysdata.h"
+#include "webserver.hpp"
 
 int main( void )
 {

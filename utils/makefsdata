@@ -5,7 +5,7 @@
 # used by one of the magical web libraries. You don't need to
 # understand this file
 
-open(OUTPUT, "> ../source/autogen_fsdata.c"); # This is the only modified line
+open(OUTPUT, "> ../source/webserver/autogen_fsdata.c"); # This is the only modified line
 
 open(FILES, "find . -type f |");
 
