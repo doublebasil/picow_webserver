@@ -134,6 +134,15 @@ int wifi_runServer()
     ssi_init();
     cgi_init();
 
+    // Flicker the on-board LED to indicate web server is initialised
+    for( int i = 0; i < 3; ++i )
+    {
+        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 1 );
+        sleep_ms( 200 );
+        cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, 0 );
+        sleep_ms( 200 );
+    }
+
     return 0;
 }
 
