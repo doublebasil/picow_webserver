@@ -1,82 +1,21 @@
 #include "webserver.hpp"
+#include "ssi.hpp"
+#include "cgi.hpp"
 #include "config.h"
 
-#define NUM_OF_CGI_HANDLERS ( 1 )
+/* Some notes:
+SSI = Server Side Includes, CGI = Common Gateway Interface
+SSI is for updating the HTML. Look for <!--#tagName-->> in a .shtml file
+CGI is for changing the data on the pico, based on user interaction on the web
 
-// SSI is for updating the HTML, and is controlled by the pico
-// CGI is for changing the data on the pico, based on user interaction on the web
-
-// Note LWIP is Light-weight IP, it's a TCP IP stack and it's basically magic
-
-tSysData* m_sysDataPtr;
-
-// SERVER SIDE INCLUDES MODULE DATA
-/* __not_in_flash is a pico-sdk macro which ensures this array will be placed in RAM
-This is a "premature optimisation" which prevents flash latency
-When declared as __not_in_flash, the array needs a group name, which is "httpd"
-By default, the tags have a maximum length of 8. See ssi_init where this is checked
+LWIP is Light-weight IP, it's a TCP IP stack and it's basically magic
+All we need to do is make the .shtmls, and the ssi and cgi handlers
+everything else is handled by the lwip libraries, afaik
 */
-static const char* __not_in_flash("httpd") ssiTags[] = {
-    "btnState",
-    "btnBg",
-};
 
-// SERVER SIDE INCLUDES MODULE FUNCTIONS
-static void ssi_init( void );
-// Define an ssiHandler function as time-critical (reduces flash latency)
-static uint16_t __time_critical_func( ssiHandler )(int tagIndex, char *pcInsert, int iInsertLen)
-{
-    size_t printed;
-    bool ledState;
-    switch( tagIndex )
-    {
-        case 0: // "btnState"
-        {
-            // This is for changing the html checkbox to checked or not
-            ledState = m_sysDataPtr->builtInLedState;
-            if( ledState == true )
-                printed = snprintf( pcInsert, iInsertLen, "checked" );
-            else
-                printed = snprintf( pcInsert, iInsertLen, " " );
-            
-            break;
-        }
-        case 1: // "btnBg"
-        {
-            // Update the text background based on the LED state
-            ledState = m_sysDataPtr->builtInLedState;
-            if( ledState == true )
-                printed = snprintf( pcInsert, iInsertLen, "\"background-color:green;\"" );
-            else
-                printed = snprintf( pcInsert, iInsertLen, "\"background-color:red;\"" );
+// Declare pointer to my big data struct
+static tSysData* m_sysDataPtr;
 
-            break;
-        }
-        default:
-        {
-            printed = 0;
-            break;
-        }
-    }
-
-    // Ensure 'printed' can fit in a 16 bit variable
-    LWIP_ASSERT( "Variable 'printed' too large for 16 bits", printed < 0xFFFF );
-
-    return (uint16_t) printed;
-}
-
-// COMMON GATEWAY INTERFACE MODULE FUNCTIONS
-static void cgi_init( void );
-
-// COMMON GATEWAY INTERFACE MODULE DATA
-static const tCGI cgiHandlers[NUM_OF_CGI_HANDLERS] =
-{
-    {
-        "/led.cgi", cgiHandler1
-    },
-};
-
-// PUBLIC MODULE FUNCTIONS
 int wifi_init( tSysData* sysDataPtr )
 {
     m_sysDataPtr = sysDataPtr;
@@ -125,14 +64,15 @@ int wifi_runServer()
     extern cyw43_t cyw43_state;
     // IPv4 is always 32 bits, and is separated into 4 groups of 8 bits
     uint32_t ipAddress = cyw43_state.netif[CYW43_ITF_STA].ip_addr.addr;
+    // Print the IP to terminal so you know what to connect to
     printf( "IP Address: %lu.%lu.%lu.%lu\n", ipAddress & 0xFF, (ipAddress >> 8) & 0xFF, (ipAddress >> 16) & 0xFF, ipAddress >> 24 );
 
-    // This is a pico-sdk function. Does some clever tcp-pcb stuff idk
+    // This is a pico-sdk function. Does some big brain tcp-pcb stuff, don't need to understand
     httpd_init();
 
-    // We need an ssi-cgi server
-    ssi_init();
-    cgi_init();
+    // Init SSI and CGI as we'll need both
+    ssi_init( m_sysDataPtr );
+    cgi_init( m_sysDataPtr );
 
     // Flicker the on-board LED to indicate web server is initialised
     for( int i = 0; i < 3; ++i )
@@ -146,53 +86,3 @@ int wifi_runServer()
     return 0;
 }
 
-// SERVER SIDE INCLUDES MODULE FUNCTIONS
-static void ssi_init( void )
-{
-    // Ensure that the ssiTags don't exceed the maximum length
-    for( size_t i = 0; i < LWIP_ARRAYSIZE( ssiTags ); ++i )
-    {
-        // I think an assert will get the program stuck here if a tag is too long
-        LWIP_ASSERT( "An SSI tag exceeds LWIP_HTTPD_MAX_TAG_NAME_LEN",
-                    strlen( ssiTags[i] ) <= LWIP_HTTPD_MAX_TAG_NAME_LEN );
-    }
-
-    // Tell the pico-sdk to use our ssiHandler function
-    http_set_ssi_handler( ssiHandler,
-                          ssiTags,
-                          LWIP_ARRAYSIZE( ssiTags ) );
-}
-
-// COMMON GATEWAY INTERFACE MODULE FUNCTIONS
-static void cgi_init( void )
-{
-    http_set_cgi_handlers( cgiHandlers, NUM_OF_CGI_HANDLERS );
-}
-
-const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] )
-{
-    int i;
-
-    printf( "cgiHandler1 called with index %d\n", iIndex );
-
-    /* Check the query string
-     * Allgedly, a request to turn on LED2 and LED4 would be "/something.cgi?led=2&led=4"
-     */
-
-    // If no response is given, turn led off
-    bool newState = false;
-
-    for( i = 0; i < iNumParams; ++i )
-    {
-        if( strcmp( pcParam[i], "led" ) == 0 )
-        {
-            // Strings are equal
-            newState = true;
-        }
-    }
-
-    cyw43_arch_gpio_put( CYW43_WL_GPIO_LED_PIN, newState );
-    m_sysDataPtr->builtInLedState = newState;
-
-    return "/index.shtml";
-}

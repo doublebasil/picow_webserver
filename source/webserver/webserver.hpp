@@ -15,7 +15,4 @@ int wifi_init( tSysData* sysDataPtr );
 
 int wifi_runServer();
 
-// Define a cgiHandler
-const char* cgiHandler1( int iIndex, int iNumParams, char *pcParam[], char *pcValue[] );
-
 #endif /* WEBSERVER_HPP */
