@@ -10,18 +10,18 @@
 # This is much faster, but will use more cpu
 # -C build tells make what folder to build from/in
 
-
-# If submodules not found, git submodule update to download sdk
-if [ ! -d "submodules" ]; then
-    git submodule update --init --recursive
-    # Must be recursive as the sdk has wifi submodules
-fi
+# Download the pico-sdk as a submodule
+git submodule update --init --recursive
 
 compile_successful=false
 # Build files
 cmake -B build && \
 make -j $(getconf _NPROCESSORS_ONLN) -C build && \
 compile_successful=true
+
+if [ "$compile_successful" = false ]; then
+    echo If issues persist, try deleting the build folder and retrying
+fi
 
 echo compile_successful=$compile_successful
 
