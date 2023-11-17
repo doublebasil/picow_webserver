@@ -1,3 +1,5 @@
+# This README needs updating!
+
 # plant_watering
 The classic automatic watering system, for my ```thirsty``` basil plant.
 
